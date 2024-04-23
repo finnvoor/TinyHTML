@@ -1,0 +1,19 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test
+    runs-on: macOS-14
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test
+        run: set -o pipefail && xcodebuild test -scheme TinyHTML -destination "platform=macOS" | xcbeautify --renderer github-actions

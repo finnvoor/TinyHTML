@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: macOS-14
+    strategy:
+      matrix:
+        destination:
+          - "generic/platform=iOS"
+          - "platform=macOS"
+          - "generic/platform=visionOS"
+          - "generic/platform=tvOS"
+          - "generic/platform=watchOS"
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build platform ${{ matrix.destination }}
+        run: set -o pipefail && xcodebuild build -scheme TinyHTML -destination "${{ matrix.destination }}" | xcbeautify --renderer github-actions
